@@ -18,7 +18,6 @@ The library has the following main usages:
 - Retrieving basic VM properties
 """[1:-1]
 
-
 setup(
 	name='robotframework-pyspherelibrary',
 	version=VERSION,

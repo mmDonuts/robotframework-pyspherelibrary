@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keywordspec generated="20131110 20:24:18" type="library" name="PysphereLibrary" format="ROBOT">
+<version>1.0.0</version>
+<scope>global</scope>
+<namedargs>yes</namedargs>
+<doc>Robot Framework test library for VMWare interaction
+
+The library has the following main usages:
+- Identifying available virtual machines on a vCenter or 
+  ESXi host
+- Starting and stopping VMs
+- Shutting down, rebooting VM guest OS
+- Checking VM status
+- Reverting VMs to a snapshot
+- Retrieving basic VM properties
+
+This library is essentially a wrapper around Pysphere
+http://code.google.com/p/pysphere/ adding connection 
+caching consistent with other Robot Framework libraries.</doc>
+<kw name="Close All Pysphere Connections">
+<arguments>
+</arguments>
+<doc>Closes all active pysphere connections.
+
+This keyword is appropriate for use in test or suite
+teardown. The assignment of connection indices resets
+after calling this keyword, and the next connection
+opened will be allocated index `1`.
+
+Example:
+| ${my_connection}= | Open Pysphere Connection | myhost | myuser | mypassword |
+| Open Pysphere Connection | myotherhost | myuser | mypassword | alias=otherhost |
+| Switch Pysphere Connection | ${myserver} |
+| Power On Vm | myvm |
+| Switch Pysphere Connection | otherhost | 
+| Power On Vm | myothervm |
+| [Teardown] | Close All Pysphere Connections | </doc>
+</kw>
+<kw name="Close Pysphere Connection">
+<arguments>
+</arguments>
+<doc>Closes the current pysphere connection.
+
+No other connection is made active by this keyword. use
+`Switch Pysphere Connection` to switch to another connection.
+
+Example:
+| ${my_connection}= | Open Pysphere Connection | myhost | myuser | mypassword |
+| Power On Vm | myvm |
+| Close Pysphere Connection |</doc>
+</kw>
+<kw name="Get Vm Names">
+<arguments>
+</arguments>
+<doc>Returns a list of all registered VMs for the
+currently active connection.</doc>
+</kw>
+<kw name="Get Vm Properties">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Returns a dictionary of the properties 
+associated with the named VM.</doc>
+</kw>
+<kw name="Is Connected To Pysphere">
+<arguments>
+</arguments>
+<doc></doc>
+</kw>
+<kw name="Open Pysphere Connection">
+<arguments>
+<arg>host</arg>
+<arg>user</arg>
+<arg>password</arg>
+<arg>alias=None</arg>
+</arguments>
+<doc>Opens a pysphere connection to the given `host`
+using the supplied `user` and `password`.
+
+The new connection is made active and any existing connectiosn
+are left open in the background.
+
+This keyword returns the index of the new connection which
+can be used later to switch back to it. Indices start from `1`
+and are reset when `Close All Pysphere Connections` is called.
+
+An optional `alias` can be supplied for the connection and used
+for switching between connections. See `Switch Pysphere 
+Connection` for details.
+
+Example:
+| ${index}= | Open Pysphere Connection | my.vcenter.server.com | username | password | alias=myserver |</doc>
+</kw>
+<kw name="Power Off Vm">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Power off the vm if it is not
+already powered off. This method blocks 
+until the operation is completed.</doc>
+</kw>
+<kw name="Power On Vm">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Power on the vm if it is not
+already running. This method blocks
+until the operation is completed.</doc>
+</kw>
+<kw name="Reboot Vm Os">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Initiate a reboot in the guest OS 
+in the VM, returning immediately. </doc>
+</kw>
+<kw name="Reset Vm">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Perform a reset on the VM. This 
+method blocks until the operation is
+completed.</doc>
+</kw>
+<kw name="Revert Vm To Snapshot">
+<arguments>
+<arg>name</arg>
+<arg>snapshot_name=None</arg>
+</arguments>
+<doc>Revert the named VM to a snapshot. If `snapshot_name`
+is supplied it is reverted to that snapshot, otherwise
+it is reverted to the current snapshot. This method
+blocks until the operation is completed.</doc>
+</kw>
+<kw name="Shutdown Vm Os">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Initiate a shutdown in the guest OS 
+in the VM, returning immediately. </doc>
+</kw>
+<kw name="Switch Pysphere Connection">
+<arguments>
+<arg>index_or_alias</arg>
+</arguments>
+<doc>Switches the active connection by index of alias.
+
+`index_or_alias` is either a connection index (an integer)
+or alias (a string). Index can be obtained by capturing
+the return value from `Open Pysphere Connection` and
+alias can be set as a named variable with the same method.
+
+Example:
+| ${my_connection}= | Open Pysphere Connection | myhost | myuser | mypassword |
+| Open Pysphere Connection | myotherhost | myuser | mypassword | alias=otherhost |
+| Switch Pysphere Connection | ${my_connection} |
+| Power On Vm | myvm |
+| Switch Pysphere Connection | otherhost | 
+| Power On Vm | myothervm |</doc>
+</kw>
+<kw name="Vm Is Powered Off">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Returns true if the VM is in the 
+powered off state.</doc>
+</kw>
+<kw name="Vm Is Powered On">
+<arguments>
+<arg>name</arg>
+</arguments>
+<doc>Returns true if the VM is in the 
+powered on state.</doc>
+</kw>
+</keywordspec>

@@ -68,7 +68,7 @@ class PysphereLibrary(object):
         Example:
         | ${my_connection}= | Open Pysphere Connection | myhost | myuser | mypassword |
         | Open Pysphere Connection | myotherhost | myuser | mypassword | alias=otherhost |
-        | Switch Pysphere Connection | ${myserver} |
+        | Switch Pysphere Connection | ${my_connection} |
         | Power On Vm | myvm |
         | Switch Pysphere Connection | otherhost | 
         | Power On Vm | myothervm |
