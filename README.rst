@@ -9,6 +9,7 @@ test library for VMWare interaction using the
 great pysphere library (http://code.google.com/p/pysphere/)
 
 The library has the following main usages:
+
 * Identifying available virtual machines on a vCenter or 
   ESXi host
 * Starting and stopping VMs
