@@ -34,7 +34,7 @@ class PysphereLibrary(object):
         """Opens a pysphere connection to the given `host`
         using the supplied `user` and `password`.
 
-        The new connection is made active and any existing connectiosn
+        The new connection is made active and any existing connections
         are left open in the background.
 
         This keyword returns the index of the new connection which
