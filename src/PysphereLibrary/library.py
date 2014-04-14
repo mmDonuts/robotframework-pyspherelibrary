@@ -9,7 +9,7 @@ class PysphereLibrary(object):
     """Robot Framework test library for VMWare interaction
 
     The library has the following main usages:
-    - Identifying available virtual machines on a vCenter or 
+    - Identifying available virtual machines on a vCenter or
       ESXi host
     - Starting and stopping VMs
     - Shutting down, rebooting VM guest OS
@@ -18,7 +18,7 @@ class PysphereLibrary(object):
     - Retrieving basic VM properties
 
     This library is essentially a wrapper around Pysphere
-    http://code.google.com/p/pysphere/ adding connection 
+    http://code.google.com/p/pysphere/ adding connection
     caching consistent with other Robot Framework libraries.
     """
 
@@ -42,7 +42,7 @@ class PysphereLibrary(object):
         and are reset when `Close All Pysphere Connections` is called.
 
         An optional `alias` can be supplied for the connection and used
-        for switching between connections. See `Switch Pysphere 
+        for switching between connections. See `Switch Pysphere
         Connection` for details.
 
         Example:
@@ -70,7 +70,7 @@ class PysphereLibrary(object):
         | Open Pysphere Connection | myotherhost | myuser | mypassword | alias=otherhost |
         | Switch Pysphere Connection | ${my_connection} |
         | Power On Vm | myvm |
-        | Switch Pysphere Connection | otherhost | 
+        | Switch Pysphere Connection | otherhost |
         | Power On Vm | myothervm |
         """
         old_index = self._connections.current_index
@@ -109,9 +109,9 @@ class PysphereLibrary(object):
         | Open Pysphere Connection | myotherhost | myuser | mypassword | alias=otherhost |
         | Switch Pysphere Connection | ${myserver} |
         | Power On Vm | myvm |
-        | Switch Pysphere Connection | otherhost | 
+        | Switch Pysphere Connection | otherhost |
         | Power On Vm | myothervm |
-        | [Teardown] | Close All Pysphere Connections | 
+        | [Teardown] | Close All Pysphere Connections |
         """
         self._connections.close_all(closer_method='disconnect')
         logger.info("All pysphere connections closed.")
@@ -123,7 +123,7 @@ class PysphereLibrary(object):
         return self._connections.current.get_registered_vms()
 
     def get_vm_properties(self, name):
-        """Returns a dictionary of the properties 
+        """Returns a dictionary of the properties
         associated with the named VM.
         """
         vm = self._get_vm(name)
@@ -145,18 +145,18 @@ class PysphereLibrary(object):
 
     def power_off_vm(self, name):
         """Power off the vm if it is not
-        already powered off. This method blocks 
+        already powered off. This method blocks
         until the operation is completed.
-        """        
+        """
         if not self.vm_is_powered_off(name):
             vm = self._get_vm(name)
-            vm.power_off()   
+            vm.power_off()
             logger.info("VM %s was powered off." % name)
         else:
             logger.info("VM %s was already powered off." % name)
-        
+
     def reset_vm(self, name):
-        """Perform a reset on the VM. This 
+        """Perform a reset on the VM. This
         method blocks until the operation is
         completed.
         """
@@ -165,34 +165,34 @@ class PysphereLibrary(object):
         logger.info("VM %s reset." % name)
 
     def shutdown_vm_os(self, name):
-        """Initiate a shutdown in the guest OS 
-        in the VM, returning immediately. 
+        """Initiate a shutdown in the guest OS
+        in the VM, returning immediately.
         """
         vm = self._get_vm(name)
         vm.shutdown_guest()
         logger.info("VM %s shutdown initiated." % name)
 
     def reboot_vm_os(self, name):
-        """Initiate a reboot in the guest OS 
-        in the VM, returning immediately. 
+        """Initiate a reboot in the guest OS
+        in the VM, returning immediately.
         """
         vm = self._get_vm(name)
         vm.reboot_guest()
         logger.info("VM %s reboot initiated." % name)
 
     def vm_is_powered_on(self, name):
-        """Returns true if the VM is in the 
+        """Returns true if the VM is in the
         powered on state.
         """
         vm = self._get_vm(name)
-        return vm.is_powered_on()          
+        return vm.is_powered_on()
 
     def vm_is_powered_off(self, name):
-        """Returns true if the VM is in the 
+        """Returns true if the VM is in the
         powered off state.
         """
         vm = self._get_vm(name)
-        return vm.is_powered_off()         
+        return vm.is_powered_off()
 
     def revert_vm_to_snapshot(self, name, snapshot_name=None):
         """Revert the named VM to a snapshot. If `snapshot_name`
@@ -210,7 +210,9 @@ class PysphereLibrary(object):
 
     def _get_vm(self, name):
         connection = self._connections.current
-        return connection.get_vm_by_name(name)    
+        if isinstance(name, unicode):
+            name = name.encode("utf8")
+        return connection.get_vm_by_name(name)
 
 
 
