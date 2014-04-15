@@ -141,8 +141,6 @@ class PysphereLibrary(object):
         else:
             logger.info("VM %s was already powered on." % name)
 
-
-
     def power_off_vm(self, name):
         """Power off the vm if it is not
         already powered off. This method blocks
@@ -193,6 +191,14 @@ class PysphereLibrary(object):
         """
         vm = self._get_vm(name)
         return vm.is_powered_off()
+
+    def vm_wait_for_tools(self, name, timeout=15):
+        """Returns true when the VM tools are running.  If the tools are not
+        running within the specified timeout, a VIException is raised with
+        the TIME_OUT FaultType.
+        """
+        vm = self._get_vm(name)
+        return vm.wait_for_tools(timeout)
 
     def revert_vm_to_snapshot(self, name, snapshot_name=None):
         """Revert the named VM to a snapshot. If `snapshot_name`
