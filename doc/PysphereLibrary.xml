@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<keywordspec generated="20140423 12:12:25" type="library" name="PysphereLibrary" format="ROBOT">
+<keywordspec generated="20140423 12:37:23" type="library" name="PysphereLibrary" format="ROBOT">
 <version>1.1.0</version>
 <scope>global</scope>
 <namedargs>yes</namedargs>
@@ -11,8 +11,11 @@ The library has the following main usages:
 - Starting and stopping VMs
 - Shutting down, rebooting VM guest OS
 - Checking VM status
+- Waiting for VM tools to start running
 - Reverting VMs to a snapshot
 - Retrieving basic VM properties
+- File upload, deletion and relocation
+- Directory creation, deletion and relocation
 
 This library is essentially a wrapper around Pysphere
 http://code.google.com/p/pysphere/ adding connection
