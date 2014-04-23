@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<keywordspec generated="20131110 20:24:18" type="library" name="PysphereLibrary" format="ROBOT">
-<version>1.0.0</version>
+<keywordspec generated="20140423 12:12:25" type="library" name="PysphereLibrary" format="ROBOT">
+<version>1.1.0</version>
 <scope>global</scope>
 <namedargs>yes</namedargs>
 <doc>Robot Framework test library for VMWare interaction
 
 The library has the following main usages:
-- Identifying available virtual machines on a vCenter or 
+- Identifying available virtual machines on a vCenter or
   ESXi host
 - Starting and stopping VMs
 - Shutting down, rebooting VM guest OS
@@ -15,7 +15,7 @@ The library has the following main usages:
 - Retrieving basic VM properties
 
 This library is essentially a wrapper around Pysphere
-http://code.google.com/p/pysphere/ adding connection 
+http://code.google.com/p/pysphere/ adding connection
 caching consistent with other Robot Framework libraries.</doc>
 <kw name="Close All Pysphere Connections">
 <arguments>
@@ -32,9 +32,9 @@ Example:
 | Open Pysphere Connection | myotherhost | myuser | mypassword | alias=otherhost |
 | Switch Pysphere Connection | ${myserver} |
 | Power On Vm | myvm |
-| Switch Pysphere Connection | otherhost | 
+| Switch Pysphere Connection | otherhost |
 | Power On Vm | myothervm |
-| [Teardown] | Close All Pysphere Connections | </doc>
+| [Teardown] | Close All Pysphere Connections |</doc>
 </kw>
 <kw name="Close Pysphere Connection">
 <arguments>
@@ -59,7 +59,7 @@ currently active connection.</doc>
 <arguments>
 <arg>name</arg>
 </arguments>
-<doc>Returns a dictionary of the properties 
+<doc>Returns a dictionary of the properties
 associated with the named VM.</doc>
 </kw>
 <kw name="Is Connected To Pysphere">
@@ -77,7 +77,7 @@ associated with the named VM.</doc>
 <doc>Opens a pysphere connection to the given `host`
 using the supplied `user` and `password`.
 
-The new connection is made active and any existing connectiosn
+The new connection is made active and any existing connections
 are left open in the background.
 
 This keyword returns the index of the new connection which
@@ -85,7 +85,7 @@ can be used later to switch back to it. Indices start from `1`
 and are reset when `Close All Pysphere Connections` is called.
 
 An optional `alias` can be supplied for the connection and used
-for switching between connections. See `Switch Pysphere 
+for switching between connections. See `Switch Pysphere
 Connection` for details.
 
 Example:
@@ -96,7 +96,7 @@ Example:
 <arg>name</arg>
 </arguments>
 <doc>Power off the vm if it is not
-already powered off. This method blocks 
+already powered off. This method blocks
 until the operation is completed.</doc>
 </kw>
 <kw name="Power On Vm">
@@ -111,14 +111,14 @@ until the operation is completed.</doc>
 <arguments>
 <arg>name</arg>
 </arguments>
-<doc>Initiate a reboot in the guest OS 
-in the VM, returning immediately. </doc>
+<doc>Initiate a reboot in the guest OS
+in the VM, returning immediately.</doc>
 </kw>
 <kw name="Reset Vm">
 <arguments>
 <arg>name</arg>
 </arguments>
-<doc>Perform a reset on the VM. This 
+<doc>Perform a reset on the VM. This
 method blocks until the operation is
 completed.</doc>
 </kw>
@@ -136,8 +136,8 @@ blocks until the operation is completed.</doc>
 <arguments>
 <arg>name</arg>
 </arguments>
-<doc>Initiate a shutdown in the guest OS 
-in the VM, returning immediately. </doc>
+<doc>Initiate a shutdown in the guest OS
+in the VM, returning immediately.</doc>
 </kw>
 <kw name="Switch Pysphere Connection">
 <arguments>
@@ -155,21 +155,143 @@ Example:
 | Open Pysphere Connection | myotherhost | myuser | mypassword | alias=otherhost |
 | Switch Pysphere Connection | ${my_connection} |
 | Power On Vm | myvm |
-| Switch Pysphere Connection | otherhost | 
+| Switch Pysphere Connection | otherhost |
 | Power On Vm | myothervm |</doc>
+</kw>
+<kw name="Vm Delete Directory">
+<arguments>
+<arg>name</arg>
+<arg>path</arg>
+</arguments>
+<doc>Deletes the directory with the given `path` on the named VM,
+including its contents.</doc>
+</kw>
+<kw name="Vm Delete File">
+<arguments>
+<arg>name</arg>
+<arg>remote_path</arg>
+</arguments>
+<doc>Deletes the file with the given `remote_path` on the named VM.
+        </doc>
+</kw>
+<kw name="Vm Get File">
+<arguments>
+<arg>name</arg>
+<arg>remote_path</arg>
+<arg>local_path</arg>
+</arguments>
+<doc>Downloads a file from the `remote_path` on the named VM to the
+specified `local_path`, overwriting any existing local file</doc>
 </kw>
 <kw name="Vm Is Powered Off">
 <arguments>
 <arg>name</arg>
 </arguments>
-<doc>Returns true if the VM is in the 
+<doc>Returns true if the VM is in the
 powered off state.</doc>
 </kw>
 <kw name="Vm Is Powered On">
 <arguments>
 <arg>name</arg>
 </arguments>
-<doc>Returns true if the VM is in the 
+<doc>Returns true if the VM is in the
 powered on state.</doc>
+</kw>
+<kw name="Vm Login In Guest">
+<arguments>
+<arg>name</arg>
+<arg>username</arg>
+<arg>password</arg>
+</arguments>
+<doc>Logs into the named VM with the specified `username` and `password`.
+The VM must be powered on and the VM tools must be running on the VM.</doc>
+</kw>
+<kw name="Vm Make Directory">
+<arguments>
+<arg>name</arg>
+<arg>path</arg>
+</arguments>
+<doc>Creates a directory with the specified `path` on the named VM.
+        </doc>
+</kw>
+<kw name="Vm Move Directory">
+<arguments>
+<arg>name</arg>
+<arg>src_path</arg>
+<arg>dst_path</arg>
+</arguments>
+<doc>Moves or renames a directory from `src_path` to `dst_path` on the
+named VM.</doc>
+</kw>
+<kw name="Vm Move File">
+<arguments>
+<arg>name</arg>
+<arg>src_path</arg>
+<arg>dst_path</arg>
+</arguments>
+<doc>Moves a remote file on the named VM from `src_path` to `dst_path`,
+overwriting any existing file at the target location</doc>
+</kw>
+<kw name="Vm Run Synchronous Process">
+<arguments>
+<arg>name</arg>
+<arg>cwd</arg>
+<arg>program_path</arg>
+<arg>*args</arg>
+<arg>**kwargs</arg>
+</arguments>
+<doc>Executes a process on the named VM and waits for the process to
+complete. Parameters are the same as for `vm_start_process`. Returns
+the exit code of the process.</doc>
+</kw>
+<kw name="Vm Send File">
+<arguments>
+<arg>name</arg>
+<arg>local_path</arg>
+<arg>remote_path</arg>
+</arguments>
+<doc>Uploads a file from `local_path` to the specified `remote_path` on
+the named VM, overwriting any existing remote file</doc>
+</kw>
+<kw name="Vm Start Process">
+<arguments>
+<arg>name</arg>
+<arg>cwd</arg>
+<arg>program_path</arg>
+<arg>*args</arg>
+<arg>**kwargs</arg>
+</arguments>
+<doc>Starts a program in the named VM. Returns the process PID.
+program_path [string]: The absolute path to the program to start.
+args [list of strings]: The arguments to the program.
+env [dictionary]: environment variables to be set for the program
+                  being run. Eg. {'foo':'bar', 'varB':'B Value'}
+cwd [string]: The absolute path of the working directory for the
+              program to be run. VMware recommends explicitly
+              setting the working directory for the program to be
+              run. If this value is unset or is an empty string,
+              the behaviour depends on the guest operating system.
+              For Linux guest operating systems, if this value is
+              unset or is an empty string, the working directory
+              will be the home directory of the user associated with
+              the guest authentication. For other guest operating
+              systems, if this value is unset, the behaviour is
+              unspecified.</doc>
+</kw>
+<kw name="Vm Terminate Process">
+<arguments>
+<arg>name</arg>
+<arg>pid</arg>
+</arguments>
+<doc>Terminates the process with the given `pid` on the named VM
+        </doc>
+</kw>
+<kw name="Vm Wait For Tools">
+<arguments>
+<arg>name</arg>
+<arg>timeout=120</arg>
+</arguments>
+<doc>Waits for up to the `timeout` interval for the VM tools to start
+running on the named VM.</doc>
 </kw>
 </keywordspec>
