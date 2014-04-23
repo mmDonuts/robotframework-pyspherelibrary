@@ -23,8 +23,11 @@ The library has the following main usages:
 
 Installation
 ------------
-This package is not yet indexed, but you can install
-the tgz or zip file from the local filesystem:
+This package can be installed via pip:
+
+    $ pip install robotframework-pysphere[version]
+
+You can also install the tgz or zip file from the local filesystem using pip:
 
     $ pip install robotframework-pysphere[version-and-filetype]
 
@@ -35,8 +38,8 @@ Or extract the archive and run from the command line:
 
 License
 -------
-Copyright 2013, David Weinrich
-Copyright 2014, Andy Piper
+| Copyright 2013, David Weinrich
+| Copyright 2014, Andy Piper
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
