@@ -18,8 +18,11 @@ class PysphereLibrary(object):
     - Starting and stopping VMs
     - Shutting down, rebooting VM guest OS
     - Checking VM status
+    - Waiting for VM tools to start running
     - Reverting VMs to a snapshot
     - Retrieving basic VM properties
+    - File upload, deletion and relocation
+    - Directory creation, deletion and relocation
 
     This library is essentially a wrapper around Pysphere
     http://code.google.com/p/pysphere/ adding connection
