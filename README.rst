@@ -20,6 +20,7 @@ The library has the following main usages:
 * Retrieving basic VM properties
 * File upload, deletion and relocation
 * Directory creation, deletion and relocation
+* Process execution and termination
 
 Installation
 ------------

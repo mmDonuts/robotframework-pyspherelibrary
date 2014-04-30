@@ -23,6 +23,7 @@ class PysphereLibrary(object):
     - Retrieving basic VM properties
     - File upload, deletion and relocation
     - Directory creation, deletion and relocation
+    - Process execution and termination
 
     This library is essentially a wrapper around Pysphere
     http://code.google.com/p/pysphere/ adding connection
@@ -133,6 +134,10 @@ class PysphereLibrary(object):
     def get_vm_names(self):
         """Returns a list of all registered VMs for the
         currently active connection.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | @{vm_names}= | Get Vm Names |
         """
         return self._connections.current.get_registered_vms()
 
@@ -217,7 +222,8 @@ class PysphereLibrary(object):
 
     def vm_wait_for_tools(self, name, timeout=120):
         """Waits for up to the `timeout` interval for the VM tools to start
-        running on the named VM.
+        running on the named VM. VMware tools must be running on the VM for the
+        `Vm Login In Guest` keyword to succeed.
         """
         vm = self._get_vm(name)
         vm.wait_for_tools(timeout)
@@ -226,7 +232,14 @@ class PysphereLibrary(object):
 
     def vm_login_in_guest(self, name, username, password):
         """Logs into the named VM with the specified `username` and `password`.
-        The VM must be powered on and the VM tools must be running on the VM.
+        The VM must be powered on and the VM tools must be running on the VM,
+        which can be verified using the `Vm Wait For Tools` keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Power On Vm | myvm |
+        | Vm Wait For Tools | myvm |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
         """
         vm = self._get_vm(name)
         vm.login_in_guest(username, password)
@@ -234,7 +247,13 @@ class PysphereLibrary(object):
 
 
     def vm_make_directory(self, name, path):
-        """Creates a directory with the specified `path` on the named VM.
+        """Creates a directory with the specified `path` on the named VM. The
+        `Vm Login In Guest` keyword must precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | Vm Make Directory | myvm | C:\\some\\directory\\path |
         """
         vm = self._get_vm(name)
         vm.make_directory(path, True)
@@ -243,7 +262,12 @@ class PysphereLibrary(object):
 
     def vm_move_directory(self, name, src_path, dst_path):
         """Moves or renames a directory from `src_path` to `dst_path` on the
-        named VM.
+        named VM. The `Vm Login In Guest` keyword must precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | Vm Move Directory | myvm | C:\\directory1 | C:\\directory2 |
         """
         vm = self._get_vm(name)
         vm.move_directory(src_path, dst_path)
@@ -253,7 +277,13 @@ class PysphereLibrary(object):
 
     def vm_delete_directory(self, name, path):
         """Deletes the directory with the given `path` on the named VM,
-        including its contents.
+        including its contents. The `Vm Login In Guest` keyword must precede
+        this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | Vm Delete Directory | myvm | C:\\directory |
         """
         vm = self._get_vm(name)
         vm.delete_directory(path, True)
@@ -262,7 +292,13 @@ class PysphereLibrary(object):
 
     def vm_get_file(self, name, remote_path, local_path):
         """Downloads a file from the `remote_path` on the named VM to the
-        specified `local_path`, overwriting any existing local file
+        specified `local_path`, overwriting any existing local file. The
+        `Vm Login In Guest` keyword must precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | Vm Get File | myvm | C:\\remote\\location.txt | C:\\local\\location.txt |
         """
         vm = self._get_vm(name)
         vm.get_file(remote_path, local_path, True)
@@ -272,7 +308,13 @@ class PysphereLibrary(object):
 
     def vm_send_file(self, name, local_path, remote_path):
         """Uploads a file from `local_path` to the specified `remote_path` on
-        the named VM, overwriting any existing remote file
+        the named VM, overwriting any existing remote file. The
+        `Vm Login In Guest` keyword must precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | Vm Send File | myvm | C:\\local\\location.txt | C:\\remote\\location.txt |
         """
         local_path = os.path.abspath(local_path)
         logger.info(u"Uploading file {} to {} on VM {}.".format(
@@ -285,7 +327,13 @@ class PysphereLibrary(object):
 
     def vm_move_file(self, name, src_path, dst_path):
         """Moves a remote file on the named VM from `src_path` to `dst_path`,
-        overwriting any existing file at the target location
+        overwriting any existing file at the target location. The
+        `Vm Login In Guest` keyword must precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | Vm Move File | myvm | C:\\original_location.txt | C:\\new_location.txt |
         """
         vm = self._get_vm(name)
         vm.move_file(src_path, dst_path, True)
@@ -294,7 +342,13 @@ class PysphereLibrary(object):
 
 
     def vm_delete_file(self, name, remote_path):
-        """Deletes the file with the given `remote_path` on the named VM.
+        """Deletes the file with the given `remote_path` on the named VM. The
+        `Vm Login In Guest` keyword must precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | Vm Delete File | myvm | C:\\remote_file.txt |
         """
         vm = self._get_vm(name)
         vm.delete_file(remote_path)
@@ -302,22 +356,18 @@ class PysphereLibrary(object):
 
 
     def vm_start_process(self, name, cwd, program_path, *args, **kwargs):
-        """Starts a program in the named VM. Returns the process PID.
-            program_path [string]: The absolute path to the program to start.
-            args [list of strings]: The arguments to the program.
-            env [dictionary]: environment variables to be set for the program
-                              being run. Eg. {'foo':'bar', 'varB':'B Value'}
-            cwd [string]: The absolute path of the working directory for the
-                          program to be run. VMware recommends explicitly
-                          setting the working directory for the program to be
-                          run. If this value is unset or is an empty string,
-                          the behaviour depends on the guest operating system.
-                          For Linux guest operating systems, if this value is
-                          unset or is an empty string, the working directory
-                          will be the home directory of the user associated with
-                          the guest authentication. For other guest operating
-                          systems, if this value is unset, the behaviour is
-                          unspecified.
+        """Starts a program in the named VM with the working directory specified
+        by `cwd`. Returns the process PID. The `Vm Login In Guest` keyword must
+        precede this keyword.
+
+        The optional `env` argument can be used to provide a dictionary
+        containing environment variables to be set for the program
+        being run.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | ${pid}= | Vm Start Process | myvm | C:\\ | C:\\windows\\system32\\cmd.exe | /c | echo | hello world |
         """
         env = kwargs.get('env', None)
         logger.info(u"Starting process '{} {}' on VM {} cwd={} env={}".format(
@@ -330,9 +380,16 @@ class PysphereLibrary(object):
 
 
     def vm_run_synchronous_process(self, name, cwd, program_path, *args, **kwargs):
-        """Executes a process on the named VM and waits for the process to
-        complete. Parameters are the same as for `vm_start_process`. Returns
-        the exit code of the process.
+        """Executes a process on the named VM and blocks until the process has
+        completed. Parameters are the same as for `vm_start_process`. Returns
+        the exit code of the process. The `Vm Login In Guest` keyword must
+        precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | ${rc}= | Vm Run Synchronous Process | myvm | C:\\ | C:\\windows\\system32\\cmd.exe | /c | echo | hello world |
+        | Should Be Equal As Integers | ${rc} | 0 |
         """
         pid = self.vm_start_process(name, cwd, program_path, *args, **kwargs)
 
@@ -353,7 +410,14 @@ class PysphereLibrary(object):
 
 
     def vm_terminate_process(self, name, pid):
-        """Terminates the process with the given `pid` on the named VM
+        """Terminates the process with the given `pid` on the named VM. The
+        `Vm Login In Guest` keyword must precede this keyword.
+
+        Example:
+        | Open Pysphere Connection | myhost | myuser | mypassword |
+        | Vm Login In Guest | myvm | vm_username | vm_password |
+        | ${pid}= | Vm Start Process | myvm | C:\\ | C:\\windows\\system32\\cmd.exe | /c | pause |
+        | Vm Terminate Process | myvm | ${pid} |
         """
         vm = self._get_vm(name)
         vm.terminate_process(pid)
