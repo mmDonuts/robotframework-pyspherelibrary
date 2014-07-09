@@ -419,6 +419,7 @@ class PysphereLibrary(object):
         | ${pid}= | Vm Start Process | myvm | C:\\ | C:\\windows\\system32\\cmd.exe | /c | pause |
         | Vm Terminate Process | myvm | ${pid} |
         """
+        pid = int(pid)
         vm = self._get_vm(name)
         vm.terminate_process(pid)
         logger.info(u"Process with pid {} terminated on VM {}".format(pid, name))
@@ -441,8 +442,8 @@ class PysphereLibrary(object):
 
 
     def _get_vm(self, name):
-        if name not in self._vm_cache:
-            logger.debug(u"Adding VM {} to cache.".format(name))
+        if name not in self._vm_cache or not self._vm_cache[name]._server.keep_session_alive():
+            logger.debug(u"VM {} not in cache or vcenter connection expired.".format(name))
         connection = self._connections.current
         if isinstance(name, unicode):
             name = name.encode("utf8")
