@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<keywordspec generated="20140430 13:23:45" type="library" name="PysphereLibrary" format="ROBOT">
-<version>1.1.0</version>
+<keywordspec generated="20141013 13:18:36" type="library" name="PysphereLibrary" format="ROBOT">
+<version>1.1.2</version>
 <scope>global</scope>
 <namedargs>yes</namedargs>
 <doc>Robot Framework test library for VMWare interaction

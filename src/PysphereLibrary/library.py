@@ -105,6 +105,14 @@ class PysphereLibrary(object):
         | Close Pysphere Connection |
 
         """
+        cache_copy = self._vm_cache.copy()
+        for name, vm in self._vm_cache.iteritems():
+            if id(vm._server) == id(self._connections.current):
+                del cache_copy[name]
+                logger.debug("Removed VM '{}' from cache".format(name))
+
+        self._vm_cache = cache_copy
+
         self._connections.current.disconnect()
         logger.info("Connection closed, there will no longer be a current pysphere connection.")
         self._connections.current = self._connections._no_current
@@ -128,6 +136,7 @@ class PysphereLibrary(object):
         | [Teardown] | Close All Pysphere Connections |
         """
         self._connections.close_all(closer_method='disconnect')
+        self._vm_cache = {}
         logger.info("All pysphere connections closed.")
 
 

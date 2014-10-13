@@ -29,3 +29,12 @@ New features
 Bugs fixed
 ----------
 * Fix comparing unicode and non-unicode strings when searching for a VM by name
+
+
+1.0.2
+=====
+2014-10-13
+
+Bugs fixed
+----------
+* When closing a vSphere connection, clear the related VMs from the VM cache
